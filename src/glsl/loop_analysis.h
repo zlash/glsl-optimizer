@@ -27,6 +27,7 @@
 #define LOOP_ANALYSIS_H
 
 #include "ir.h"
+#include "glsl_types.h"
 #include "program/hash_table.h"
 
 /**

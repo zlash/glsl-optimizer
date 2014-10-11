@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "c99_compat.h"
 #include "util/ralloc.h"
 #include "glsl_types.h"
 #include "list.h"
