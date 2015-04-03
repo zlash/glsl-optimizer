@@ -320,13 +320,16 @@ static bool CheckMetal (bool vertex, bool gles, const std::string& testName, con
 	FILE* f = fopen ("metalTemp.metal", "wb");
 	fwrite (source.c_str(), source.size(), 1, f);
 	fclose (f);
-	
+
+#if defined(__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__)
 	int res = system("/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/usr/bin/metal metalTemp.metal -o metalTemp.o -std=ios-metal1.0 -Wno-parentheses-equality");
 	if (res != 0)
 	{
 		printf ("\n  %s: Metal compiler failed\n", testName.c_str());
 		return false;
 	}
+#endif //
+
 	return true;
 }
 
