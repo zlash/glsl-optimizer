@@ -134,7 +134,7 @@
  * C99 __func__ macro
  */
 #ifndef __func__
-#  if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)
+#  if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L) && !defined(_MSC_VER)
      /* C99 */
 #  elif defined(__SUNPRO_C) && defined(__C99FEATURES__)
      /* C99 */
