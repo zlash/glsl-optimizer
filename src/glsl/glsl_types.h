@@ -28,6 +28,7 @@
 
 #include <string.h>
 #include <assert.h>
+#include "c99_compat.h"
 #include "main/mtypes.h" /* for gl_texture_index, C++'s enum rules are broken */
 
 #ifdef __cplusplus
@@ -578,7 +579,7 @@ struct glsl_type {
     */
    const glsl_type *field_type(const char *name) const;
 
-   const glsl_precision field_precision(const char *name) const;
+   glsl_precision field_precision(const char *name) const;
 
 
    /**
