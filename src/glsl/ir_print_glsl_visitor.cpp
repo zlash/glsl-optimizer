@@ -883,26 +883,23 @@ void ir_print_glsl_visitor::visit(ir_texture *ir)
 	}
 #endif // 0
 
-	
-    // texture function name
-    //ACS: shadow lookups and lookups with dimensionality included in the name were deprecated in 130
-    if(state->language_version<130) 
-    {
-        buffer.asprintf_append ("%s", is_shadow ? "shadow" : "texture");
-        buffer.asprintf_append ("%s", tex_sampler_dim_name[sampler_dim]);
-    }
-    else 
-    {
-        if (ir->op == ir_txf || ir->op == ir_txf_ms)
-            buffer.asprintf_append ("texelFetch");
-        }
-        else
-            buffer.asprintf_append ("texture");
-    }
+	// texture function name
+	//ACS: shadow lookups and lookups with dimensionality included in the name were deprecated in 130
+	if(state->language_version<130) 
+	{
+		buffer.asprintf_append ("%s", is_shadow ? "shadow" : "texture");
+		buffer.asprintf_append ("%s", tex_sampler_dim_name[sampler_dim]);
+	}
+	else
+	{
+		if (ir->op == ir_txf || ir->op == ir_txf_ms)
+			buffer.asprintf_append ("texelFetch");
+		else
+			buffer.asprintf_append ("texture");
+	}
 
 	if (is_array && state->EXT_texture_array_enable)
 		buffer.asprintf_append ("Array");
-	
 	if (ir->op == ir_tex && is_proj)
 		buffer.asprintf_append ("Proj");
 	if (ir->op == ir_txl)
