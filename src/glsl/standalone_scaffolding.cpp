@@ -51,6 +51,7 @@ _mesa_shader_debug(struct gl_context *, GLenum, GLuint *,
 extern "C" void
 _mesa_error_no_memory(const char *)
 {
+   fprintf(stderr, "Mesa error: out of memory in %s", caller);
 }
 
 
