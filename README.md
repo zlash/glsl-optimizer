@@ -1,5 +1,8 @@
+Modified fork that tries to minimize output. Tries.
+
 GLSL optimizer
 ==============
+
 
 A C++ library that takes GLSL shaders, does some GPU-independent optimizations on them
 and outputs GLSL or Metal source back. Optimizations are function inlining, dead code removal, copy propagation,

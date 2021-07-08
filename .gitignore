@@ -74,5 +74,6 @@ glsl_compiler
 .settings/
 .pydevproject
 
+.build
 build
 metalTemp.metal
