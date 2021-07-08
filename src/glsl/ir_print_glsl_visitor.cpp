@@ -1350,11 +1350,16 @@ void print_float (string_buffer& buffer, float f)
 	}
 	#endif
 
-	buffer.asprintf_append ("%s", tmp);
+	int substr = 0;
+	if(tmp[0] == '0' && tmp[1] == '.') {
+		substr = 1;
+	}
+
+	buffer.asprintf_append ("%s", &tmp[substr]);
 
 	// need to append ".0"?
 	if (!strchr(tmp,'.') && (posE == NULL))
-		buffer.asprintf_append(".0");
+		buffer.asprintf_append(".");
 }
 
 void ir_print_glsl_visitor::visit(ir_constant *ir)
