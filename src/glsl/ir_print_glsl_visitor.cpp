@@ -347,7 +347,7 @@ void ir_print_glsl_visitor::print_var_name (ir_variable* v)
         id = ++globals->var_counter;
         hash_table_insert (globals->var_hash, (void*)id, v);
 	}
-    if (id)
+   /* if (id)
     {
         if (v->data.mode == ir_var_temporary)
             buffer.asprintf_append ("_%d", (int)id);
@@ -355,9 +355,9 @@ void ir_print_glsl_visitor::print_var_name (ir_variable* v)
             buffer.asprintf_append ("%s_%d", v->name, (int)id);
     }
 	else
-	{
+	{*/
 		buffer.asprintf_append ("%s", v->name);
-	}
+	//}
 }
 
 void ir_print_glsl_visitor::print_precision (ir_instruction* ir, const glsl_type* type)
@@ -1523,10 +1523,10 @@ ir_print_glsl_visitor::visit(ir_discard *ir)
 void
 ir_print_glsl_visitor::visit(ir_if *ir)
 {
-   buffer.asprintf_append ("if (");
+   buffer.asprintf_append ("if(");
    ir->condition->accept(this);
 
-   buffer.asprintf_append (") {");
+   buffer.asprintf_append ("){");
 	indentation++; previous_skipped = false;
 
 
@@ -1542,7 +1542,7 @@ ir_print_glsl_visitor::visit(ir_if *ir)
 
    if (!ir->else_instructions.is_empty())
    {
-	   buffer.asprintf_append (" else {");
+	   buffer.asprintf_append ("else{");
 	   indentation++; previous_skipped = false;
 
 	   foreach_in_list(ir_instruction, inst, &ir->else_instructions) {

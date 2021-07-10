@@ -11,7 +11,8 @@
 #include "program.h"
 #include "linker.h"
 #include "standalone_scaffolding.h"
-
+#include "ir_variable_refcount.h"
+#include "util/hash_table.h"
 
 extern "C" struct gl_shader *
 _mesa_new_shader(struct gl_context *ctx, GLuint name, GLenum type);
@@ -614,6 +615,52 @@ static void find_shader_variables(glslopt_shader* sh, exec_list* ir)
 	}
 }
 
+#include <vector>
+#include <tuple>
+#include <algorithm>
+
+
+typedef std::tuple<int, ir_variable_refcount_entry *> Tuple;
+
+
+void minimizeSymbolNames(exec_list* ir){
+	ir_variable_refcount_visitor v;
+	bool progress = false;
+
+	v.run(ir);
+
+	std::vector<Tuple> vars;
+
+	struct hash_entry *e;
+	hash_table_foreach(v.ht, e) {
+		ir_variable_refcount_entry *entry = (ir_variable_refcount_entry *)e->data;
+		Tuple tuple = {entry->referenced_count,entry};
+		vars.push_back(tuple);
+	}
+
+	std::sort(vars.begin(),vars.end(),std::greater<Tuple>());
+
+	for(int i=0;i<vars.size();i++) {
+		char nn[100];
+
+		int count = std::get<0>(vars[i]);
+		ir_variable_refcount_entry *entry = std::get<1>(vars[i]);
+
+
+		*nn='a'+(i&0xF);
+		int ni=(i>>4);
+		char *nni=nn+1;
+		while(ni&0xF) {
+			*(nni++)='a'+(ni&0xF);
+			ni =  ni>>4;
+		}
+		*nni=0;
+		entry->var->name = strdup(nn);
+	}
+
+			
+}
+
 
 glslopt_shader* glslopt_optimize (glslopt_ctx* ctx, glslopt_shader_type type, const char* shaderSource, unsigned options)
 {
@@ -711,6 +758,9 @@ glslopt_shader* glslopt_optimize (glslopt_ctx* ctx, glslopt_shader_type type, co
 		do_optimization_passes(ir, linked, state, shader);
 		validate_ir_tree(ir);
 	}	
+
+	// Shorten variable names
+	minimizeSymbolNames(ir);
 	
 	// Final optimized output
 	if (!state->error)
