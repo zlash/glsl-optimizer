@@ -409,7 +409,11 @@ void ir_print_glsl_visitor::print_precision (ir_instruction* ir, const glsl_type
 		if (ir->ir_type == ir_type_function_signature)
 			return;
 	}
-	buffer.asprintf_append ("%s", get_precision_string(prec));
+
+	if (prec != glsl_precision_high) {
+		buffer.asprintf_append ("%s", get_precision_string(prec));
+	}
+
 }
 
 
