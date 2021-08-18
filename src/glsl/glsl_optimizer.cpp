@@ -640,11 +640,16 @@ void minimizeSymbolNames(exec_list* ir){
 
 	std::sort(vars.begin(),vars.end(),std::greater<Tuple>());
 
-	for(int i=0;i<vars.size();i++) {
+	for(int i=0;i<vars.size();i++) {		
 		char nn[100];
 
 		int count = std::get<0>(vars[i]);
 		ir_variable_refcount_entry *entry = std::get<1>(vars[i]);
+
+		if(entry->var->data.mode == ir_var_shader_in  || entry->var->data.mode == ir_var_shader_out
+		|| entry->var->data.mode == ir_var_uniform)  {
+			continue;
+		}
 
 
 		*nn='a'+(i&0xF);
